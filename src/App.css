@@ -1,22 +1,88 @@
 .container {
-    background-color: #c00025;
-    width: 100%;
-    max-width: 550px;
-    border-radius: 15px;
-    border: 2px solid grey;
-    padding-bottom: 25px;
+  background-color: #c00025;
+  width: 100%;
+  max-width: 450px;
+  border-radius: 15px;
+  border: 2px solid grey;
+  padding: 25px;
 }
 .display {
-    margin-top: 25px;
-    height: 100px;
-    width: 450px;
-    border-radius: 50px;
-    color: white;
-    background-color: #322c2d;
-    box-shadow: 1px 1px #322c2d;
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
-    padding-right: 8%;
-    font-size: 5.0rem;
-  }
+  margin: 25px 0;
+  height: 100px;
+  width: 450px;
+  border-radius: 50px;
+  color: white;
+  background-color: #322c2d;
+  box-shadow: 1px 1px #322c2d;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  padding-right: 8%;
+  font-size: 5rem;
+}
+
+.App {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.App button {
+  width: 90px;
+  height: 90px;
+  border-radius: 45px;
+  margin: 0 0 15px 0;
+  color: white;
+  border: 0;
+  font-size: 28px;
+  box-shadow: black 0 4px 0;
+}
+.specials {
+  display: flex;
+  justify-content: space-between;
+}
+.numbers {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.specials button {
+  background: rgb(19, 70, 143);
+}
+
+.numbers button {
+  background: rgb(15, 48, 103);
+}
+.specials button:nth-child(3n),
+.numbers button:nth-child(3n) {
+  margin-right: 0;
+}
+.zero {
+  width: 210px !important;
+}
+
+.operators {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+.operators button {
+  background: rgb(21, 93, 130);
+  margin-right: 0;
+}
+
+.buttons .left {
+  display: flex;
+  flex-direction: column;
+  width: 73.3333%;
+}
+.buttons .right {
+  display: flex;
+  flex-direction: column;
+  width: 26.6666%;
+}
