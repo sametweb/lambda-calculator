@@ -18,9 +18,36 @@ function App() {
   // Your functions should accept a parameter of the the item data being displayed to the DOM (ie - should recieve 5 if the user clicks on
   // the "5" button, or the operator if they click one of those buttons) and then call your setter function to update state.
   // Don't forget to pass the functions (and any additional data needed) to the components as props
-
-  const getValue = value =>
-    setDisplay(display === 0 ? value : (display += value));
+  const getValue = value => {
+    value === "C"
+      ? setDisplay(0)
+      : value === "="
+      ? setDisplay(display !== 0 ? Math.round(eval(display) * 100) / 100 : 0)
+      : value === "+/-"
+      ? setDisplay(eval(display) - 2 * eval(display))
+      : value === "%"
+      ? setDisplay(display)
+      : value === "/"
+      ? display === 0
+        ? setDisplay(0)
+        : setDisplay(display + value)
+      : value === "*"
+      ? display === 0
+        ? setDisplay(0)
+        : setDisplay(display + value)
+      : value === "+"
+      ? display === 0
+        ? setDisplay(0)
+        : setDisplay(display + value)
+      : value === "-"
+      ? display === 0
+        ? setDisplay(0)
+        : setDisplay(display + value)
+      : display === 0
+      ? setDisplay((value = +value)) // to prevent multiple zeros on the display
+      : setDisplay(display + value);
+    // setDisplay(display === 0 ? value : (display += value));
+  };
 
   return (
     <div className="container">
@@ -30,11 +57,11 @@ function App() {
         <Display value={display} />
         <div className="buttons">
           <div className="left">
-            <Specials specials={data.specials} />
+            <Specials specials={data.specials} getValue={getValue} />
             <Numbers numbers={data.numbers} getValue={getValue} />
           </div>
           <div className="right">
-            <Operators operators={data.operators} />
+            <Operators operators={data.operators} getValue={getValue} />
           </div>
         </div>
       </div>
