@@ -2,7 +2,7 @@ import React from "react";
 
 const SpecialButton = ({ value, getValue }) => {
   return (
-    <button onClick={() => getValue(value)}>
+    <button onClick={() => getValue(value, "special")}>
       {value}
       {/* Display a button element rendering the data being passed down from the parent container on props */}
     </button>
