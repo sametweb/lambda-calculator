@@ -26,27 +26,79 @@ function App() {
   const getValue = (value, type) => {
     switch (type) {
       case "number":
-        setNumbers({
-          ...numbers,
-          current:
-            value === "."
-              ? numbers.current.toString().includes(".")
-                ? numbers.current
-                : numbers.current + value
-              : value === 0
-              ? numbers.current === 0
-                ? numbers.current
-                : parseFloat(numbers.current + value)
-              : parseFloat(numbers.current + value),
-          display:
-            value === "."
-              ? numbers.display.toString().includes(".")
-                ? numbers.display
-                : numbers.display + value
-              : numbers.display === 0
-              ? value
-              : numbers.display + value
-        });
+        if (value === 0) {
+          if (numbers.current === 0) {
+            setNumbers({ ...numbers, current: value, display: value });
+          } else {
+            setNumbers({
+              ...numbers,
+              current: numbers.current + value,
+              display: numbers.display + value
+            });
+          }
+        } else if (value === ".") {
+          //There can only be one dot in any possible number
+          if (!numbers.current.toString().includes(".")) {
+            if (numbers.current === 0) {
+              setNumbers({
+                ...numbers,
+                current: numbers.current + value,
+                display: numbers.display + value
+              });
+            } else {
+              setNumbers({
+                ...numbers,
+                current: numbers.current + value,
+                display: numbers.display + value
+              });
+            }
+          }
+        } else {
+          //If numbers are pressed
+          if (numbers.current === 0) {
+            if (parseFloat(numbers.prev) === 0) {
+              setNumbers({
+                ...numbers,
+                current: value,
+                display: value
+              });
+            } else {
+              setNumbers({
+                ...numbers,
+                current: value,
+                display: numbers.display + value
+              });
+            }
+          } else {
+            setNumbers({
+              ...numbers,
+              current: numbers.current + value,
+              display: numbers.display + value
+            });
+          }
+        }
+
+        // setNumbers({
+        //   ...numbers,
+        //   current:
+        //     value === "."
+        //       ? numbers.current.toString().includes(".")
+        //         ? numbers.current
+        //         : numbers.current + value
+        //       : value === 0
+        //       ? numbers.current === 0
+        //         ? numbers.current
+        //         : parseFloat(numbers.current + value)
+        //       : parseFloat(numbers.current + value),
+        //   display:
+        //     value === "."
+        //       ? numbers.display.toString().includes(".")
+        //         ? numbers.display
+        //         : numbers.display + value
+        //       : numbers.display === 0
+        //       ? value
+        //       : numbers.display + value
+        // });
 
         break;
       case "special":
@@ -66,12 +118,15 @@ function App() {
         break;
       case "operator":
         if (value !== "=") {
-          if (parseInt(numbers.current) === 0 && parseInt(numbers.prev) === 0) {
+          if (
+            parseFloat(numbers.current) === 0 &&
+            parseFloat(numbers.prev) === 0
+          ) {
             //If both numbers are 0, do nothing
           } else if (
             //If first number is typed but second is not
-            parseInt(numbers.current) &&
-            parseInt(numbers.prev) === 0
+            parseFloat(numbers.current) &&
+            parseFloat(numbers.prev) === 0
           ) {
             if (!numbers.operator) {
               //If no operator selected yet
@@ -92,59 +147,70 @@ function App() {
             }
           } else if (
             //If both numbers are typed and there is a selected operator
-            parseInt(numbers.current) !== 0 &&
-            parseInt(numbers.prev) !== 0 &&
+            parseFloat(numbers.current) !== 0 &&
+            parseFloat(numbers.prev) !== 0 &&
             numbers.operator
           ) {
             if (numbers.operator === "+") {
+              let evaluation =
+                parseFloat(numbers.current) + parseFloat(numbers.prev);
               setNumbers({
                 ...numbers,
-                current: parseFloat(numbers.current) + parseFloat(numbers.prev),
-                prev: 0,
-                display: parseFloat(numbers.current) + parseFloat(numbers.prev),
+                current: 0,
+                prev: evaluation,
+                display: evaluation + value,
                 operator: value
               });
             } else if (numbers.operator === "-") {
+              let evaluation =
+                parseFloat(numbers.prev) - parseFloat(numbers.current);
               setNumbers({
                 ...numbers,
-                current: parseFloat(numbers.prev) - parseFloat(numbers.current),
-                prev: 0,
-                display: parseFloat(numbers.prev) - parseFloat(numbers.current),
+                current: 0,
+                prev: evaluation,
+                display: evaluation + value,
                 operator: value
               });
             } else if (numbers.operator === "*") {
+              let evaluation =
+                parseFloat(numbers.current) * parseFloat(numbers.prev);
               setNumbers({
                 ...numbers,
-                current: parseFloat(numbers.current) * parseFloat(numbers.prev),
-                prev: 0,
-                display: parseFloat(numbers.current) * parseFloat(numbers.prev),
+                current: 0,
+                prev: evaluation,
+                display: evaluation + value,
                 operator: value
               });
             } else if (numbers.operator === "/") {
+              let evaluation =
+                parseFloat(numbers.current) / parseFloat(numbers.prev);
               setNumbers({
                 ...numbers,
-                current: parseFloat(numbers.current) / parseFloat(numbers.prev),
-                prev: 0,
-                display: parseFloat(numbers.current) / parseFloat(numbers.prev),
+                current: 0,
+                prev: evaluation,
+                display: evaluation + value,
                 operator: value
               });
             }
           }
         } else {
           //Eger basilan operator = ise
-          if (parseInt(numbers.current) === 0 && parseInt(numbers.prev) === 0) {
+          if (
+            parseFloat(numbers.current) === 0 &&
+            parseFloat(numbers.prev) === 0
+          ) {
             //current: 0 prev: 0
             setNumbers({ ...numbers });
           } else if (
-            parseInt(numbers.current) !== 0 &&
-            parseInt(numbers.prev) === 0
+            parseFloat(numbers.current) !== 0 &&
+            parseFloat(numbers.prev) === 0
           ) {
             //Current: x prev: 0 operator: ''
             setNumbers({ ...numbers, display: numbers.current, operator: "" });
           } else if (
             //Current: 0 prev: x operator: +-*/
-            parseInt(numbers.current) === 0 &&
-            parseInt(numbers.prev) !== 0 &&
+            parseFloat(numbers.current) === 0 &&
+            parseFloat(numbers.prev) !== 0 &&
             numbers.operator
           ) {
             setNumbers({
@@ -155,8 +221,8 @@ function App() {
               operator: ""
             });
           } else if (
-            parseInt(numbers.current) !== 0 &&
-            parseInt(numbers.prev) !== 0 &&
+            parseFloat(numbers.current) !== 0 &&
+            parseFloat(numbers.prev) !== 0 &&
             numbers.operator
           ) {
             //current: x prev: y operator: true
